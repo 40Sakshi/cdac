@@ -194,7 +194,32 @@ node 'pclient'{
                 ensure => installed,
 }
 }
-#################
+####################################################
+ansible
+nano inventory.ini
+[servers]
+server ansible_host=192.168.56.138 ansible_user=iacsd
+nano playbook.yaml
+---
+ - name: install curl and  create user
+   hosts: server
+   become: true
+
+   tasks:
+   - name: create user
+     ansible.builtin.user:
+       name: kharche
+       group: iacsd
+       state: present
+
+   - name: install curl
+     ansible.builtin.package:
+       name: curl
+       update_cache: true
+       state: present
+
+ ansible server -m ping -i inventory.ini
+ ansible-playbook playbook.yaml -i inventory.ini
 
 
 
